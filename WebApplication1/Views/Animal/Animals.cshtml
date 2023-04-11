@@ -1,0 +1,129 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<div class="section-team">
+     @if (SignInManager.IsSignedIn(User))
+    {
+        <a class="add" asp-action="CreateAnimal">Добавить животное</a>
+        <div class="table-container">
+<table class="table">
+    <thead>
+                    <tr><td>Имя</td><td>Возраст</td><td>Тип</td><td>Описание</td><td>Статус</td><td>Быстрые действия</td></tr>
+                </thead>
+            @foreach (var item in Model)
+    {
+                <tr><td>@item.Name</td><td>@item.Age</td><td>@item.Type</td><td>@item.Description</td><td>@item.StateId</td>
+                        <td>
+                            <a style='margin-left:2%;' asp-action="EditAnimal" asp-controller="Animal" asp-route-id="@item.Id">Изменить</a>
+                         <a style='margin-left: 2%;' asp-action="DeleteAnimal" asp-controller="Animal" asp-route-id="@item.Id">Удалить</a></td>
+                    </tr>
+    }
+</table>
+</div>
+    }
+    else{
+    <p class="page-text">
+        ShapShelter старается помочь животным найти новый дом. Если вам понравилось какое-то животное вы можете связаться с нами и забрать его. Для этого не нужно регистрироваться или вводить данные в форму - нужно просто нажать на кнопку.
+    </p>
+    <div class="team-container">
+    </div>
+    }
+    </div>
+    
+<script>
+    async function getAniamals() {
+        const responseStateList = await fetch("/api/States", {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+        if (responseStateList.ok === true) {
+            const stateList = await responseStateList.json();
+            const responseAnimals = await fetch("/api/Animals", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (responseAnimals.ok === true) {
+                console.log("true");
+                const animals = await responseAnimals.json();
+                const appendPlace = document.querySelector(".team-container");
+                if (animals.length === 0) {
+                    appendPlace.classList.add("empty-team-container");
+                    const emptyDBMessage = document.createElement("p");
+                    emptyDBMessage.classList.add("empty-team-cont-msq");
+                    emptyDBMessage.append("Похоже страница пуста, возможно она находится в разработке...");
+                    appendPlace.appendChild(emptyDBMessage);
+                    const emptyDBReturnLink = document.createElement("a");
+                    emptyDBReturnLink.append("Вернуться на главную.");
+                    appendPlace.appendChild(emptyDBReturnLink);
+                    emptyDBReturnLink.href = "/Home/Index";
+                    const pagetext = document.querySelector(".page-text");
+                    pagetext.classList.add("invisible");
+
+                }
+                else {
+
+
+
+                    animals.forEach(animal => {
+                        const animalCard = document.createElement("div");
+                        //create card fields
+                        animalCard.classList.add("member-card");
+                        const animalPhoto = document.createElement("img");
+                        animalPhoto.classList.add("member-photo");
+                        var sourse = "/images/animals/" + animal.image;
+                        animalPhoto.src = sourse;
+                        animalCard.appendChild(animalPhoto);
+                        const animalName = document.createElement("h3");
+                        animalName.append(animal.name);
+                        animalCard.appendChild(animalName);
+                        const animalAge = document.createElement("p");
+                        animalAge.append('Возраст: ' + animal.age + getYearVariation(animal.age));
+                        animalAge.classList.add("info");
+                        const horizContainer = document.createElement("div");
+                        horizContainer.classList.add("vertical-info");
+                        horizContainer.appendChild(animalAge);
+                        const animalType = document.createElement("p");
+                        animalType.classList.add("info");
+                        animalType.append(animal.type);
+                        horizContainer.append(animalType);
+                        animalCard.appendChild(horizContainer);
+                        const animalDescr = document.createElement("p");
+                        animalDescr.append(animal.description);
+                        animalDescr.classList.add("quot");
+                        animalCard.appendChild(animalDescr);
+                        const animlState = document.createElement("p");
+                        animlState.classList.add("info");
+                        animlState.classList.add("state");
+                        for (var i = 0; i < stateList.length; i++) {
+                            if (animal.stateId == stateList[i].id) {
+                                animlState.append(stateList[i].stateDefinition);
+                                animalCard.appendChild(animlState);
+                            }
+                        }
+                        if (animal.stateId == 1) {
+                            animlState.classList.add("free");
+                            const takeButton = document.createElement("button");
+                            takeButton.innerHTML = "Забрать";
+                            animalCard.appendChild(takeButton);
+                            takeButton.onclick = function () { window.open('https://web.telegram.org/k/'); }
+
+                        }
+
+                        appendPlace.appendChild(animalCard);
+                    });
+                }
+            }
+            else console.log("false");
+        }
+    }
+    function getYearVariation(value) {
+        value = value.toString();
+        if (value[value.length - 1] == 0)
+            return ' лет';
+        if (value[value.length - 1] >= 5 && value[value.length - 1] <= 9)
+            return ' лет';
+        if (value[value.length - 1] >= 2 && value[value.length - 1] <= 4)
+            return ' года';
+    }
+    getAniamals();
+</script>

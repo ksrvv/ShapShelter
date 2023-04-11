@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<div class="section shapshelter-main">
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="main-adaptive-data-container">
+            <div class="main-adaptive-data">
+                <h1 class="black">Приветствуем вас, @User.Identity?.Name!</h1>
+                <h3 class ="black">Вы попали на секретную администраторскую часть сайта.</h3>
+                <h3 class="black">Здесь вы можете управлять базой данных ShapSlelter. Будьте осторожны и не передавайте никому свои учетные данные.</h3>
+            </div>          
+        </div>
+    }
+    else{
+    <img class="main-img"  src="~/images/evan-qu-JIuZZ0-EC0U-unsplash.jpg" asp-append-version="true">
+        <div class="main-adaptive-data-container">
+            <div class="main-adaptive-data">
+                <h1>ShapShelter - приют для животных в Минске</h1>
+                <h3>Миссия ShapShelter - помочь  животным найти новый дом. Здесь вы можете найти бесплатного друга в виде кота, жабы и т.д. </h3>
+                <h3>Также нам можно отдать животное, если вы поняли, что не можете обеспечить ему счастливую жизнь, для этого необходимо написать нам в Телеграме по ссылке ниже. </h3>
+                <a class="main-mail" href="https://web.telegram.org/k/" target="_blank">Написать нам</a>
+
+            </div>
+            <div class="button-container">
+                <a asp-area="" asp-controller="Home" asp-action="Animals">
+                    <button class="main-button">Посмотреть животных</button>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+

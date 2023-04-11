@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div class="section-team">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a class="add" asp-action="CreateTeamMember">Добавить сотрудника</a>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr><td>Имя</td><td>Возраст</td><td>Должность</td><td>Цитата</td><td>Быстрые действия</td></tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Age</td>
+                        <td>@item.Position</td>
+                        <td>@item.Quote</td>
+
+                        <td>  <a style='margin-left:2%;' asp-action="EditTeamMember" asp-controller="TeamMember" asp-route-id="@item.Id">Изменить</a>
+                        <a style='margin-left:2%;' asp-action="DeleteTeamMember" asp-controller="TeamMember" asp-route-id="@item.Id">Удалить</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+
+    else
+    {
+        
+   
+    <p class="page-text">
+        Команда проекта ShapShelter образовалась по приколу. Все персонажи вымышлены, совпадения с реальными людьми - случайны.
+    </p>
+<div class="team-container">
+    </div>
+    }
+</div>
+<script>
+    // Получение всех пользователей
+    async function getUsers() {
+        // отправляет запрос и получаем ответ
+        const response = await fetch("/api/Team", {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+        // если запрос прошел нормально
+        if (response.ok === true) {
+            // получаем данные
+            const teammembers = await response.json();
+            const appendPlace = document.querySelector(".team-container");
+            if (teammembers.length === 0) {
+                appendPlace.classList.add("empty-team-container");
+                const emptyDBMessage = document.createElement("p");
+                emptyDBMessage.classList.add("empty-team-cont-msq");
+                emptyDBMessage.append("Похоже страница пуста, возможно она находится в разработке...");
+                appendPlace.appendChild(emptyDBMessage);
+                const emptyDBReturnLink = document.createElement("a");
+                emptyDBReturnLink.append("Вернуться на главную.");
+                appendPlace.appendChild(emptyDBReturnLink);
+                emptyDBReturnLink.href = "/Home/Index";
+                const pagetext = document.querySelector(".page-text");
+                pagetext.classList.add("invisible");
+            }
+            else{
+                teammembers.forEach(teammember => {
+                    const memberCard = document.createElement("div");
+                    //create card fields
+                    memberCard.classList.add("member-card");
+                    const horizContainer = document.createElement("div");
+                    horizContainer.classList.add("member-horizontal-info");
+                    const memberPhoto = document.createElement("img");
+                    memberPhoto.classList.add("member-photo");
+                    var sourse = "/images/team/" + teammember.image;
+                    memberPhoto.src = sourse;
+                    memberCard.appendChild(memberPhoto);
+                    const memberName = document.createElement("h3");
+                    memberName.append(teammember.name);
+                    memberCard.appendChild(memberName);
+                    const memberAge = document.createElement("p");
+                    memberAge.append(teammember.age);
+                    memberAge.classList.add("info");
+                    horizContainer.appendChild(memberAge);
+                    const memberPos = document.createElement("p");
+                    memberPos.classList.add("info");
+                    memberPos.append(teammember.position);
+                    horizContainer.append(memberPos);
+                    memberCard.appendChild(horizContainer);
+                    const memberQuote = document.createElement("p");
+                    memberQuote.append(teammember.quote);
+                    memberQuote.classList.add("quot");
+                    memberCard.appendChild(memberQuote);
+                    appendPlace.appendChild(memberCard);
+                });
+            }          
+        }
+    }
+    getUsers();
+</script>

@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="header-content">
+        <nav >
+             
+           
+                    <ul class="navig">
+                        <li>
+                            <a class ="logo" asp-area="" asp-controller="Home" asp-action="Index">ShapShelter</a>
+                        </li>
+                        <li >
+                            <a asp-area="" asp-controller="Animal" asp-action="Animals">Животные</a>
+                        </li>
+                        <li >
+                        <a asp-area="" asp-controller="TeamMember" asp-action="Team">Команда</a>
+                        </li>
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+                        <li >
+                            <a  asp-area="" asp-controller="Home" asp-action="Contact">О нас</a>
+                        </li>
+                  }
+                    </ul>
+
+
+
+                <partial name="_LoginPartial" />
+
+                    </nav>
+                    
+                
+                    
+               
+        </div>
+       
+      
+    </header>
+    <div class="container">
+        <main role="main" >
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer >
+        <div class="footer-data">
+            &copy; 2023 - ShapShelter - Belarus
+        </div>
+    </footer>
+ 
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

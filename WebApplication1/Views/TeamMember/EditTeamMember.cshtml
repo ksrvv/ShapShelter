@@ -1,0 +1,13 @@
+﻿@model WebApplication1.Models.TeamMember
+<form asp-action="EditTeamMember" asp-controller="TeamMember" asp-route-id="@Model.Id"enctype="multipart/form-data">
+    <div class="add-section ">
+        <input class="add-input" type="text" asp-for="Name"  />
+        <input class="add-input" type="number" asp-for="Age" />
+        <input class="add-input" type="text" asp-for="Position"  />
+        <input class="add-input" type="text" asp-for="Quote"  />
+        <input class="add-input" type="text" asp-for="Image" readonly />
+      <p class="info">Для того, чтобы изменить изображение, загрузите новую картинку в форму ниже.</p>
+        <input type="file" name="uploadedFile" class="input-borderless" />
+        <button type="submit"> Сохранить</button>
+    </div>
+</form>

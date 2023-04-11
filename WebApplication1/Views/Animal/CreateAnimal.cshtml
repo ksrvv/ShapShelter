@@ -1,0 +1,17 @@
+﻿@model WebApplication1.Models.Animal
+<form asp-action="CreateAnimal" asp-controller="Animal"enctype="multipart/form-data">
+    <div class="add-section ">
+        <input class="add-input" type="text" asp-for="Name" placeholder="Имя животного" />     
+        <input class="add-input" type="number" asp-for="Age" placeholder="Возраст животного" />   
+        <input class="add-input" type="text" asp-for="Type" placeholder="Порода животного" />   
+        <input class="add-input" type="text" asp-for="Description" placeholder="Описание животного" />
+        <select type="number" asp-for="StateId">
+            <option value="1">Можно забрать</option>
+            <option value="2">Забронировано</option>
+            <option value="3">Уже забрали</option>
+        </select>
+        <input type="file" name="uploadedFile" class="input-borderless" />
+
+        <button type="submit"> Добавить</button>
+    </div>
+</form>

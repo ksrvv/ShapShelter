@@ -1,0 +1,14 @@
+﻿@model WebApplication1.Models.TeamMember
+<form asp-action="CreateTeamMember" asp-controller="TeamMember" enctype="multipart/form-data">
+    <div class="add-section ">
+        <input class="add-input" type="text" asp-for="Name" placeholder="Имя" />
+        <input class="add-input" type="number" asp-for="Age" placeholder="Возраст" />
+        <input class="add-input" type="text" asp-for="Position" placeholder="Должность" />
+        <input class="add-input" type="text" asp-for="Quote" placeholder="Цитата" />
+        <input type="file" name="uploadedFile" class="input-borderless" />
+    
+      
+
+        <button type="submit"> Добавить</button>
+    </div>
+</form>

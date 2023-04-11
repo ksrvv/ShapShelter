@@ -1,0 +1,18 @@
+﻿@model WebApplication1.Models.Animal
+
+
+<div class="add-section">
+
+
+    <form asp-controller="Animal" asp-action="DeleteAnimal" method="post">
+          <h2 class="empty-team-cont-msq black" >Внимание, удаленные записи восстановлению не подлежат!</h2>
+        <div class="member-horizontal-info centered">
+        <button class="submit-deleting submit-logout" type="submit"> Удалить</button>
+        <a  class="cancel-deleteing" asp-action="Animals" asp-controller="Animal" >Отмена</a>
+    </div>
+        
+              
+            
+        </form>
+  
+</div>

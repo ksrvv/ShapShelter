@@ -1,2 +1,3 @@
 # ShapShelter
-web application for shelter
+Website for shelter   
+Used technologies: Asp Net Core C#, SQL Server
